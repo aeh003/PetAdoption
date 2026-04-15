@@ -1,0 +1,29 @@
+---
+title: "Pet Adoption"
+author: "Amelia Humphrey"
+date: "2026-04-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Pet Adoption
+
+By: Amelia Humphrey 
+
+Data Description:
+
+Pet Adoption: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset> 
+
+This dataset has information about factor that can lead to pet adoption and how long a pet stays in a shelter.
+
+We do foresee a lot of data cleaning. We will be checking for missing values, duplicates, and outliers that could skew the data. 
+
+
+Some summaries we plan to explore are the average between the different type of pet like dog and cat. 
+
+
+
+
