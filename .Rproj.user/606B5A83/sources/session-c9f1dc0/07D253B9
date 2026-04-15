@@ -3,7 +3,7 @@
     "path": "~/PetAdoption/FinalProject.Rmd",
     "project_path": "FinalProject.Rmd",
     "type": "r_markdown",
-    "hash": "1892927112",
+    "hash": "2198877944",
     "contents": "",
     "dirty": false,
     "created": 1776294284466.0,
@@ -12,16 +12,16 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "42,270",
+        "cursorPosition": "44,176",
         "scrollLine": "29",
         "last_setup_crc32": "c9f1dc0bb338d19"
     },
     "folds": "",
-    "lastKnownWriteTime": 1776294966,
+    "lastKnownWriteTime": 1776295146,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1776294966364,
+    "last_content_update": 1776295146087,
     "read_only": false,
     "read_only_alternatives": []
 }
