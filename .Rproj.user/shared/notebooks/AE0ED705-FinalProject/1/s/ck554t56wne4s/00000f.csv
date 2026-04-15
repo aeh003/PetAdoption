@@ -1,0 +1,3 @@
+"0","library(readr)"
+"0","pets <- read_csv(""pet_adoption_data.csv"")"
+"0","head(pets)"
