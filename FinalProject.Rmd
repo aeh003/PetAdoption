@@ -9,11 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Pet Adoption
-
-By: Amelia Humphrey & Mariana Correa
-
-Data Description:
+### Data Description:
 
 Pet Adoption: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset> 
 
@@ -32,7 +28,7 @@ We do foresee a lot of data cleaning. We will be checking for missing values, du
 
 Some summaries we plan to explore are the averages of numerical values between the different types of pet, and among different breeds. We also plan to investigate the data by exploring the different pet type and breeds, as well as the distribution of different color, weight, and type.
 
-Research Questions: 
+### Research Questions: 
 
 1. What factors impact the likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood vary between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?  
 
