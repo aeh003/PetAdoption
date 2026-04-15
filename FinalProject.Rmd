@@ -17,12 +17,34 @@ Data Description:
 
 Pet Adoption: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset> 
 
-This dataset has information about factor that can lead to pet adoption and how long a pet stays in a shelter.
+```{r}
+library(readr)
+pets <- read_csv("pet_adoption_data.csv")
+head(pets)
+summary(pets)
+dim(pets)
 
-We do foresee a lot of data cleaning. We will be checking for missing values, duplicates, and outliers that could skew the data. 
+```
 
 
-Some summaries we plan to explore are the average between the different type of pet like dog and cat. 
+
+This dataset has information about the factors that can lead to pet adoption and how long a pet stays in a shelter.
+
+We do foresee a lot of data cleaning. We will be checking for missing values, duplicates, and outliers that could skew the data. We also plan to change '1' and '0' to boolean values. 
+
+
+Some summaries we plan to explore are the average between the different type of pet. We plan to investigate the data by explore the different pet type and breeds. What is the distribution of different color, weight, and type.
+
+Research Questions: 
+
+1. What factors impact likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood varies between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?  
+
+2. What factor has the largest impact on time spent in the shelter? Is age a contributor? What breed is more likely to spend a long time in the shelter. Does health impact the time spent in shelter.
+
+3. Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health/are vaccinated? Does the color of the pet impact adoption fee?
+
+4. Which type of pets are most likely to have HealthCondition = 1, and how does that connect to shelter stay length? HealthCondition more common among older animals across all pet types? Are certain breeds more likely to have a HealthCondition? 
+
 
 
 
