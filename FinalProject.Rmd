@@ -26,6 +26,37 @@ The dataset we chose provides a comprehensive look into various factors that can
 
 We do foresee a lot of data cleaning. We will be checking for missing values, duplicates, and outliers that could skew the data. We also plan to change columns with binary '1' and '0' values to boolean values.
 
+```{r}
+# Load libraries
+library(dplyr)
+library(ggplot2)
+
+# Check for missing values
+colSums(is.na(pets))
+```
+There are no missing values in any of the columns of this dataset.
+
+```{r}
+# Count duplicates
+sum(duplicated(pets))
+```
+There are no duplicate rows in this dataset.
+
+```{r}
+# Convert binary
+pets$Vaccinated <- as.logical(pets$Vaccinated)
+pets$HealthCondition <- as.logical(pets$HealthCondition)
+pets$PreviousOwner <- as.logical(pets$PreviousOwner)
+pets$AdoptionLikelihood <- as.logical(pets$AdoptionLikelihood)
+```
+The columns `Vaccinated`, `HealthCondition`, `PreviousOwner` and `AdoptionLikelihood` were changed from "0" and "1" to boolean values.
+
+```{r}
+# Check datset
+str(pets)
+summary(pets)
+```
+
 Some summaries we plan to explore are the averages of numerical values between the different types of pet, and among different breeds. We also plan to investigate the data by exploring the different pet type and breeds, as well as the distribution of different color, weight, and type.
 
 ### Research Questions:
@@ -40,5 +71,3 @@ Some summaries we plan to explore are the averages of numerical values between t
 
 To investigate these questions, we plan on looking at boxplots, histograms and scatter plots and perform linear regressions to identify trends and correlations within the data.
 
-
-Is this the rigth doc
