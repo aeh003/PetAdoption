@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Data Description:
 
-Pet Adoption: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset> 
+Pet Adoption: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset>
 
 ```{r}
 library(readr)
@@ -24,23 +24,21 @@ dim(pets)
 
 The dataset we chose provides a comprehensive look into various factors that can influence the likelihood of a pet being adopted from a shelter, covering various characteristics and attributes.
 
-We do foresee a lot of data cleaning. We will be checking for missing values, duplicates, and outliers that could skew the data. We also plan to change columns with binary '1' and '0' values to boolean values. 
+We do foresee a lot of data cleaning. We will be checking for missing values, duplicates, and outliers that could skew the data. We also plan to change columns with binary '1' and '0' values to boolean values.
 
 Some summaries we plan to explore are the averages of numerical values between the different types of pet, and among different breeds. We also plan to investigate the data by exploring the different pet type and breeds, as well as the distribution of different color, weight, and type.
 
-### Research Questions: 
+### Research Questions:
 
-1. What factors impact the likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood vary between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?  
+1.  What factors impact the likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood vary between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?
 
-2. What factor has the largest impact on time spent in the shelter? Is age a contributor? What breed is more likely to spend a long time in the shelter? Does health condition impact the time spent in shelter?
+2.  What factor has the largest impact on time spent in the shelter? Is age a contributor? What breed is more likely to spend a long time in the shelter? Does health condition impact the time spent in shelter?
 
-3. Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?
+3.  Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?
 
-4. Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition? 
+4.  Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?
 
 To investigate these questions, we plan on looking at boxplots, histograms and scatter plots and perform linear regressions to identify trends and correlations within the data.
 
 
-
-
-
+Is this the rigth doc
