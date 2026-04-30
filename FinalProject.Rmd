@@ -80,6 +80,11 @@ pets |>
   filter(PetType == "Rabbit") |> 
   distinct(Breed)
 
+pets |>
+  ggplot(aes(x = PetType, fill = PetType)) +
+  geom_bar() +
+  ggtitle("Number of Pets by Pet Type") +
+  xlab("Pet Type") 
 
   
   
@@ -194,25 +199,140 @@ Note: the average was taken as each PetType does not have the same amount of ent
 
 
 ```{r}
-pet2 <- pets |> 
-  mutate(
-    AdoptionLikelihood = as.integer(AdoptionLikelihood),
-    log_time = log(TimeInShelterDays),
-    PetType = factor(PetType),
-    Breed = factor(Breed),
-    Color = factor(Color),
-    Size = factor(Size),
-    Vaccinated = factor(Vaccinated),
-    HealthCondition = factor(HealthCondition)
-  )
 
-pet2 |> 
-  select(TimeInShelterDays, log_time, PetType, )
+#Putting more emphasis on the median is important as there are many outlier that can skew the mean results 
 
+pets |> 
+  ggplot(aes(x = TimeInShelterDays))  +
+  geom_histogram(binwidth = 3, fill = "darkslategray4") + 
+  ggtitle("Time Spent in Shelter") + 
+  ylab("Number of Pets")
+
+
+pets |> 
+  ggplot(aes(x = TimeInShelterDays))  +
+  geom_histogram(binwidth = 3) + 
+  facet_wrap(~PetType) +
+  ggtitle("Time Spent in Shelter") + 
+  ylab("Number of Pets")  
+
+pets |> 
+  group_by(PetType) |> 
+  summarise(
+    n = n(),
+    avgDays = mean(TimeInShelterDays),
+    medianDays = median(TimeInShelterDays)
+  ) |> 
+  arrange(desc(medianDays)) |> 
+  ggplot(aes(x = PetType, y = medianDays)) + 
+  geom_col(fill = "darkorchid4") + 
+  ggtitle("Median Time in Shelter by Pet Type") + 
+  ylab("Median") 
+
+
+
+pets |> 
+  group_by(Breed) |> 
+  summarise(
+    n = n(),
+    avgDays = mean(TimeInShelterDays),
+    medianDays = median(TimeInShelterDays)
+  ) |> 
+  arrange(desc(medianDays)) |> 
+  ggplot(aes(x = Breed, y = medianDays)) + 
+  geom_col(fill = "darkolivegreen") + 
+  ggtitle("Median Time in Shelter by Breed") + 
+  ylab("Median") + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
+
+#making a facet
+cor(pets$AgeMonths, pets$TimeInShelterDays, use = "complete.obs")
+cor(pets$WeightKg, pets$TimeInShelterDays, use = "complete.obs")
+cor(pets$AdoptionFee, pets$TimeInShelterDays, use = "complete.obs")
+
+#shows the randomness/lack of correlation
+pets |> 
+  ggplot(aes(x = AgeMonths, y = TimeInShelterDays)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "dodgerblue3") +
+  facet_wrap(~PetType) + 
+  ggtitle("Age vs Time in Shelter") + 
+  xlab("Age (months)")  +
+  ylab("Time in Shelter (days)")
+
+#Does being old increase shelter time 
+#over 7 can be considered old for a pet
+
+#add color
+#add axises etitles and title
+pets |> 
+  mutate(AgeGroups = if_else(AgeMonths <24, "Young(<2 years old)", if_else(AgeMonths < 84, "Adult (2-7 years)", "Old(>7 years old"))) |> 
+  group_by(AgeGroups) |> 
+  summarise(
+    median = median(TimeInShelterDays)
+  )  |> 
+  ggplot(aes(x = AgeGroups, y = median)) + 
+  geom_col()
+
+
+#long stay calculate top 10% of the the total time shelter
+
+pets2 <- pets |> 
+  mutate(LongStay = TimeInShelterDays >= quantile(TimeInShelterDays, 0.9, na.rm = TRUE))
+
+
+#Is there a breed that typical stays longer 
+
+LongStayBreed <- pets2 |>
+  group_by(Breed) |> 
+  summarise(
+    n = n(),
+    medianDays = median(TimeInShelterDays), longStayRate = mean(LongStay),
+    avgDays  =  mean(TimeInShelterDays)
+  ) |> 
+  arrange(desc(medianDays))
+LongStayBreed
+
+#why n 30
+#mess with the prettiness of the graph
+LongStayBreed |> 
+  filter(n >=30) |> 
+  arrange(desc(longStayRate)) |> 
+  ggplot(aes(x = longStayRate, y = reorder(Breed, longStayRate))) +
+  geom_bar(stat = "identity") + 
+  coord_flip()
+  
+
+#Does having a healthCondition impact shelter time?
+
+pets |> 
+  group_by(HealthCondition) |> 
+  summarise(
+    n = n(),
+    avgDays = mean(TimeInShelterDays),
+    medianDays = median(TimeInShelterDays)
+  ) 
+
+
+  
+
+#graph
+pets |> 
+  ggplot(aes(x = HealthCondition, y = TimeInShelterDays)) +
+  geom_boxplot() + 
+  xlab("Health Condition")
+
+#add titles and colors 
+pets |> 
+  ggplot(aes(x = HealthCondition, y = TimeInShelterDays, fill = HealthCondition)) +
+  geom_boxplot() +
+  coord_flip()+
+  facet_wrap(~PetType)  +
+  xlab("Health Condition")
 
 ```
 
-Took the log to help with the visualization of the data. Without the scaling the data is harder to interpret 
+
 
 
 
