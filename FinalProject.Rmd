@@ -1,9 +1,10 @@
 ---
-title: "Pet Adoption"
-author: "Amelia Humphrey & Mariana Correa"
-date: "2026-04-15"
 output: github_document
 ---
+
+# Pet Adoption
+
+#### By Amelia Humphrey & Mariana Correa
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
