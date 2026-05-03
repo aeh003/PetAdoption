@@ -238,7 +238,7 @@ unique(pets$PetType)
 ``` r
 pets |> 
   filter(PetType == "Dog") |> 
-  distinct(Breed)
+  distinct(Breed) 
 ```
 
     ## # A tibble: 3 × 1
@@ -342,10 +342,13 @@ RateAdoption <- pets |>
   ) |> 
   arrange(desc(adoptionRate))
 
-#SOOOO UGLY FIXXXX
+
 RateAdoption |> 
   ggplot(aes(x=adoptionRate, y = PetType)) +
-  geom_col(fill = "#EE1289") 
+  geom_col(fill = rgb(17, 202, 160, maxColorValue = 255)) + 
+  ggtitle("Pet Type and Adoption Rate") +
+  xlab("Adoption Rate")  +
+  ylab("Pet Type")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -353,6 +356,9 @@ RateAdoption |>
 ``` r
 #Does breed play a role 
 #Note Rabbit and Birds were not considered as they each only have one Breed
+
+
+#NEED To mAKE THE GRAPH PRETTY
 pets |> 
   filter(PetType == "Dog") |> 
   group_by(Breed) |> 
@@ -362,9 +368,10 @@ pets |>
   ) |> 
   arrange(desc(rate)) |> 
   ggplot(aes(x = Breed, y = rate)) + 
-  geom_col(fill = "darkslategray2") + 
+  geom_col(fill = rgb(196, 146, 177, maxColorValue = 255)) + 
   ggtitle("Breed and Adoption Rate for Dogs")+
-  ylab("Adoption Rate")
+  ylab("Adoption Rate")  +
+theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
@@ -379,7 +386,7 @@ pets |>
   ) |> 
   arrange(desc(rate))  |> 
   ggplot(aes(x = Breed, y = rate)) + 
-  geom_col(fill = "darkslategray") + 
+  geom_col(fill = rgb(17, 202, 160, maxColorValue = 255)) + 
   ggtitle("Breed and Adoption Rate for Cats")+
   ylab("Adoption Rate")
 ```
@@ -396,12 +403,28 @@ pets |>
     rate = mean(AdoptionLikelihood)
   ) |> 
   arrange(desc(rate)) |> 
-  ggplot(aes(x = rate, y= Color)) + 
-  geom_col(fill = "dodgerblue3") + 
-  ggtitle("Color and adoption")
+  ggplot(aes(x = rate, y= Color, fill = Color)) + 
+  geom_col() +
+   scale_fill_manual(values= c("Black" = "black", "Brown" = "burlywood4", "Gray" = "gray80", "Orange" = "darkorange" , "White" = "cornsilk" ))+ 
+  theme(legend.position = "none") +
+  ggtitle("Color and Adoption") + 
+  xlab("Adoption Rate")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-7-4.png)<!-- -->
+
+``` r
+pets |> 
+  filter(PetType == "Dog", Color == "Brown") |> 
+  summarize(
+    rate = mean(AdoptionLikelihood)
+  )
+```
+
+    ## # A tibble: 1 × 1
+    ##    rate
+    ##   <dbl>
+    ## 1 0.506
 
 ``` r
 #facet moment
@@ -444,7 +467,7 @@ regardless of the amount of data for each type of animal.
 
 pets |> 
   ggplot(aes(x = TimeInShelterDays))  +
-  geom_histogram(binwidth = 3, fill = "darkslategray4") + 
+  geom_histogram(binwidth = 6, fill = rgb(196, 146, 177, maxColorValue = 255)) + 
   ggtitle("Time Spent in Shelter") + 
   ylab("Number of Pets")
 ```
@@ -454,7 +477,7 @@ pets |>
 ``` r
 pets |> 
   ggplot(aes(x = TimeInShelterDays))  +
-  geom_histogram(binwidth = 3) + 
+  geom_histogram(binwidth = 6, fill = rgb(196, 146, 177, maxColorValue = 255)) + 
   facet_wrap(~PetType) +
   ggtitle("Time Spent in Shelter") + 
   ylab("Number of Pets")  
@@ -470,11 +493,11 @@ pets |>
     avgDays = mean(TimeInShelterDays),
     medianDays = median(TimeInShelterDays)
   ) |> 
-  arrange(desc(medianDays)) |> 
-  ggplot(aes(x = PetType, y = medianDays)) + 
-  geom_col(fill = "darkorchid4") + 
-  ggtitle("Median Time in Shelter by Pet Type") + 
-  ylab("Median") 
+  arrange(desc(avgDays)) |> 
+  ggplot(aes(x = PetType, y = avgDays)) + 
+  geom_col(fill = rgb(180, 205, 205, maxColorValue = 255)) + 
+  ggtitle("Mean Time in Shelter by Pet Type") + 
+  ylab("Mean") 
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
@@ -487,11 +510,11 @@ pets |>
     avgDays = mean(TimeInShelterDays),
     medianDays = median(TimeInShelterDays)
   ) |> 
-  arrange(desc(medianDays)) |> 
-  ggplot(aes(x = Breed, y = medianDays)) + 
-  geom_col(fill = "darkolivegreen") + 
-  ggtitle("Median Time in Shelter by Breed") + 
-  ylab("Median") + 
+  arrange(desc(avgDays)) |> 
+  ggplot(aes(x = Breed, y = avgDays)) + 
+  geom_col(fill = rgb(0, 80, 136, maxColorValue = 255)) + 
+  ggtitle("Mean Time in Shelter by Breed") + 
+  ylab("Mean") + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
@@ -582,14 +605,16 @@ LongStayBreed
     ## 7 Labrador           193       42         0.155     43.8
 
 ``` r
-#why n 30
 #mess with the prettiness of the graph
 LongStayBreed |> 
   filter(n >=30) |> 
   arrange(desc(longStayRate)) |> 
   ggplot(aes(x = longStayRate, y = reorder(Breed, longStayRate))) +
-  geom_bar(stat = "identity") + 
-  coord_flip()
+  geom_bar(stat = "identity", fill = rgb(0, 80, 136, maxColorValue = 255) ) + 
+  coord_flip()+theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1)) +
+  xlab("Long Stay Rate") +
+  ylab("Breed") + 
+  ggtitle("Long Stay Rate and Breed")
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-8-7.png)<!-- -->
@@ -633,6 +658,29 @@ pets |>
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-8-9.png)<!-- -->
+
+``` r
+pets |> 
+  group_by(PetType, HealthCondition) |> 
+  summarise(
+    median_days = median(TimeInShelterDays),
+    mean_days = mean(TimeInShelterDays),
+    n = n(),
+    .groups = "drop"
+  )
+```
+
+    ## # A tibble: 8 × 5
+    ##   PetType HealthCondition median_days mean_days     n
+    ##   <chr>   <lgl>                 <dbl>     <dbl> <int>
+    ## 1 Bird    FALSE                  43        43.1   400
+    ## 2 Bird    TRUE                   44        44.4    87
+    ## 3 Cat     FALSE                  44        43.6   394
+    ## 4 Cat     TRUE                   39        40.5   111
+    ## 5 Dog     FALSE                  44        44.3   422
+    ## 6 Dog     TRUE                   40.5      43.7   100
+    ## 7 Rabbit  FALSE                  48        45.5   397
+    ## 8 Rabbit  TRUE                   48        45.1    96
 
 3.  Is there a breed that has a larger adoption fee? Does the adoption
     fee have any correlation to the size of the pet? Do pets with higher
