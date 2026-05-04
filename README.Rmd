@@ -55,8 +55,9 @@ The columns `Vaccinated`, `HealthCondition`, `PreviousOwner` and `AdoptionLikeli
 
 ```{r}
 # Check datset
-str(pets)
+head(pets)
 summary(pets)
+dim(pets)
 ```
 
 Some summaries we plan to explore are the averages of numerical values between the different types of pet, and among different breeds. We also plan to investigate the data by exploring the different pet type and breeds, as well as the distribution of different color, weight, and type.
@@ -375,18 +376,20 @@ pets |>
 # Is there a breed that has a larger adoption fee?
 # Using median fee to avoid skewness from outliers
 pets |> 
-  group_by(Breed) |> 
+  group_by(Breed, PetType) |>
   summarise(
     n = n(),
     avgFee = mean(AdoptionFee),
-    medianFee = median(AdoptionFee)
+    medianFee = median(AdoptionFee),
+    .groups = 'drop'
   ) |> 
+  mutate(BreedLabel = paste0(Breed, " (", PetType, ")")) |>
   arrange(desc(medianFee)) |> 
-  ggplot(aes(x = reorder(Breed, medianFee), y = medianFee)) + 
+  ggplot(aes(x = reorder(BreedLabel, medianFee), y = medianFee)) + 
   geom_col(fill = "lightseagreen") + 
-  coord_flip() +
+  coord_flip() + 
   ggtitle("Median Adoption Fee by Breed") +
-  xlab("Breed") +
+  xlab("Breed (Pet Type)") +
   ylab("Median Adoption Fee ($)")
 
 # Does the adoption fee have any correlation to the size of the pet?
@@ -426,6 +429,15 @@ pets |>
   xlab("Color") +
   ylab("Adoption Fee ($)") +
   theme(legend.position = "none")
+
+# Does adoption fee impact the likelihood of adoption?
+pets |> 
+  ggplot(aes(x = AdoptionLikelihood, y = AdoptionFee, fill = AdoptionLikelihood)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("FALSE" = "tomato", "TRUE" = "springgreen4")) +
+  ggtitle("Adoption Fee by Adoption Likelihood") +
+  xlab("Adoption Likelihood") +
+  ylab("Adoption Fee ($)")
 ```
 
 4.  Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?
@@ -436,7 +448,6 @@ pets |>
   group_by(PetType) |> 
   summarise(
     n = n(),
-    # Since TRUE = Medical Condition, the proportion of healthy pets is 1 minus the mean
     HealthRate = 1 - mean(HealthCondition) 
   ) |> 
   arrange(desc(HealthRate)) |> 
@@ -444,7 +455,7 @@ pets |>
   geom_col(fill = "mediumpurple3") +
   ggtitle("Proportion of Healthy Pets by Pet Type") +
   xlab("Pet Type") +
-  ylab("Proportion Healthy (HealthCondition = FALSE)")
+  ylab("Proportion Healthy")
 
 # How does that connect to the time spent in the shelter?
 pets |> 
@@ -453,18 +464,17 @@ pets |>
   scale_fill_manual(values = c("FALSE" = "springgreen4", "TRUE" = "tomato")) +
   facet_wrap(~PetType) +
   ggtitle("Time in Shelter by Medical Condition and Pet Type") +
-  xlab("Has Medical Condition (TRUE = Yes, FALSE = No)") +
+  xlab("Medical Condition") +
   ylab("Time in Shelter (Days)")
 
 # Are medical conditions more common among older animals across all pet types?
 pets |> 
-  mutate(AgeGroups = if_else(AgeMonths < 24, "Young(<2 years)", 
-                     if_else(AgeMonths < 84, "Adult(2-7 years)", "Old(>7 years)"))) |> 
-  mutate(AgeGroups = factor(AgeGroups, levels = c("Young(<2 years)", "Adult(2-7 years)", "Old(>7 years)"))) |>
+  mutate(AgeGroups = if_else(AgeMonths < 24, "Young (<2 years)", 
+                     if_else(AgeMonths < 84, "Adult (2-7 years)", "Old (>7 years)"))) |>
+  mutate(AgeGroups = factor(AgeGroups, levels = c("Young (<2 years)", "Adult (2-7 years)", "Old (>7 years)"))) |>
   group_by(AgeGroups, PetType) |> 
   summarise(
     n = n(),
-    # Since TRUE = Medical Condition, the mean gives the direct proportion of sick pets
     MedicalConditionRate = mean(HealthCondition), 
     .groups = 'drop'
   ) |> 
@@ -476,18 +486,35 @@ pets |>
 
 # Are certain breeds more likely to have a medical condition?
 pets |> 
-  group_by(Breed) |> 
+  group_by(Breed, PetType) |>
   summarise(
     n = n(),
-    MedicalConditionRate = mean(HealthCondition)
+    MedicalConditionRate = mean(HealthCondition),
+    .groups = 'drop'
   ) |> 
+  mutate(BreedLabel = paste0(Breed, " (", PetType, ")")) |>
   arrange(desc(MedicalConditionRate)) |> 
-  ggplot(aes(x = reorder(Breed, MedicalConditionRate), y = MedicalConditionRate)) +
+  ggplot(aes(x = reorder(BreedLabel, MedicalConditionRate), y = MedicalConditionRate)) +
   geom_col(fill = "indianred") +
   coord_flip() +
   ggtitle("Proportion of Pets with Medical Conditions by Breed") +
-  xlab("Breed") +
+  xlab("Breed (Pet Type)") +
   ylab("Proportion with Medical Condition")
+
+# Does health condition impact the likelihood of adoption?
+pets |> 
+  group_by(HealthCondition) |> 
+  summarise(
+    n = n(),
+    AdoptionRate = mean(AdoptionLikelihood)
+  ) |> 
+  ggplot(aes(x = HealthCondition, y = AdoptionRate, fill = HealthCondition)) +
+  geom_col(color = "black") + 
+  scale_fill_manual(values = c("FALSE" = "springgreen4", "TRUE" = "tomato")) +
+  ggtitle("Adoption Rate by Health Condition") +
+  xlab("Medical Condition") +
+  ylab("Adoption Rate") +
+  theme(legend.position = "none")
 ```
 
 To investigate these questions, we plan on looking at boxplots, histograms and scatter plots and perform linear regressions to identify trends and correlations within the data.
