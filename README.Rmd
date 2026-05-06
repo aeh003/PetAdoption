@@ -143,9 +143,6 @@ pets |>
   ggtitle("Number of Pets by Pet Type") +
   xlab("Pet Type") 
 
-  
-  
-
 
 ```
 
@@ -182,8 +179,6 @@ cor(pets$TimeInShelterDays, pets$AdoptionLikelihood)
 
 A pet is, on average, 32.8% likely to be adopted. The time in shelter's correlation to adoption likelihood is practically nonexistent. The type of pet that is most likely to be adopted is dogs around 46.4%, and the least likely pet to get adopted is rabbits around 25.4%.
 
-#Does breed play a role #Note Rabbit and Birds were not considered as they each only have one Breed
-
 ```{r}
 pets |> 
   filter(PetType == "Dog") |> 
@@ -198,8 +193,6 @@ pets |>
   ggtitle("Breed and Adoption Rate for Dogs")+
   ylab("Adoption Rate")  +
 theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
-
-
 
 pets |> 
   filter(PetType == "Cat") |> 
@@ -216,7 +209,7 @@ pets |>
 
 ```
 
-These graph show the adoption likelihoods for different type of breeds with the PetType. Birds and Rabbits do no have graphs as each only has one breed. From the dog graph, it is clear that labradors are the most likely dog breed to be adopted with around 73% likely. The cat graph displays that Siamese are more likely to be adopted in comparison to Persian cats.
+These graph show the adoption likelihoods for different type of breeds with the PetType. Birds and Rabbits do no have graphs as each only has one breed. From the dog graph, it is clear that Labradors are the most likely dog breed to be adopted with around 73% likely. The cat graph displays that Siamese are more likely to be adopted in comparison to Persian cats.
 
 ```{r}
 
@@ -263,7 +256,7 @@ pets |>
   )
 ```
 
-The top graph shows a general color breakdown by color of adoption likelihood with orange pets being the most likily and white pets being the least likely. The second graph facets by PetType showing that brown dog are the most likely to be adopted. White rabbits are seen to be decently less likely to be adopted in comparison with other PetTypes and within rabbits in general.
+The top graph shows a general color breakdown by color of adoption likelihood with orange pets being the most likily and white pets being the least likely. The second graph facets by PetType showing that brown dog are the most likely to be adopted. White rabbits are seen to be decently less likely to be adopted in comparison with other PetType and within rabbits in general.
 
 ```{r}
 most_adopted <- pets |> 
@@ -298,7 +291,6 @@ ADD AN OVERALL CONCLUSION TO THIS SECTION
 
 ```{r}
 
-
 pets |> 
   ggplot(aes(x = TimeInShelterDays))  +
   geom_histogram(binwidth = 6, fill = rgb(196, 146, 177, maxColorValue = 255)) + 
@@ -307,9 +299,9 @@ pets |>
 
 ```
 
+//TODO
+
 ```{r}
-
-
 pets |> 
   ggplot(aes(x = TimeInShelterDays))  +
   geom_histogram(binwidth = 6, fill = rgb(196, 146, 177, maxColorValue = 255)) + 
@@ -317,6 +309,8 @@ pets |>
   ggtitle("Time Spent in Shelter") + 
   ylab("Number of Pets")  
 ```
+
+//TODO
 
 ```{r}
 pets |> 
@@ -333,6 +327,8 @@ pets |>
   ylab("Mean") 
 ```
 
+The graph shows the average time a pet type spend in the shelter. Rabbits have the longest average stay time, but all the animals spend around the same amount on average in the shelter (within 10 days).
+
 ```{r}
 pets |> 
   group_by(Breed) |> 
@@ -348,6 +344,8 @@ pets |>
   ylab("Mean") + 
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
+
+The graph was created to see if there is a certain breed that has abnormally long stays. The graph shows that all of the breeds are within 10 days of average shelter time. This means that not one type of breed is particular, not adopted quickly.
 
 ```{r}
 #making a facet
@@ -370,10 +368,7 @@ pets |>
 ```{r}
 
 #Does being old increase shelter time 
-#over 7 can be considered old for a pet
 
-#add color
-#add axises etitles and title
 pets |> 
   mutate(AgeGroups = if_else(AgeMonths <24, "Young(<2 years old)", if_else(AgeMonths < 84, "Adult (2-7 years)", "Old(>7 years old"))) |> 
   group_by(AgeGroups) |> 
@@ -381,8 +376,12 @@ pets |>
     median = median(TimeInShelterDays)
   )  |> 
   ggplot(aes(x = AgeGroups, y = median)) + 
-  geom_col()
+  geom_col() + 
+  ggtitle("Age Groups and Time in Shelter")
+
 ```
+
+This graph displays that younger pets (under 2) tend to spend less time in the shelter. This makes sense since my pet owner likes to adopt puppies and kittens. This graph was created to see if old pets are more likely to spend longer time in the shelter. The data does support that assumption, but not significantly as adult pets have a similar median.
 
 ```{r}
 #long stay calculate top 10% of the the total time shelter
@@ -418,6 +417,8 @@ LongStayBreed |>
   ggtitle("Long Stay Rate and Breed")
 ```
 
+Long Stays are the top 10 quantile of time in the shelter. //TODO
+
 ```{r}
 
 #Does having a healthCondition impact shelter time?
@@ -431,13 +432,16 @@ pets |>
   ) 
   
 
-#graph
+
 pets |> 
-  ggplot(aes(x = HealthCondition, y = TimeInShelterDays)) +
+  ggplot(aes(x = HealthCondition, y = TimeInShelterDays, fill = HealthCondition)) +
   geom_boxplot() + 
   xlab("Health Condition")
 
+
 ```
+
+The ranges on the boxplots and the medians are relative the same thus there is no significant impact of health condition on the amount of shelter days.
 
 ```{r}
 
@@ -447,9 +451,14 @@ pets |>
   geom_boxplot() +
   coord_flip()+
   facet_wrap(~PetType)  +
-  xlab("Health Condition")
+  xlab("Health Condition") + 
+  ggtitle("Time In Shelter and Health Condition")
 
 ```
+
+The graph shows that having a health condition does not durasticly impact the amount of time animal spend in the shelter regardless of the type of pet. Although the cats and dogs are slightly more likely to spend less time in the shelter if they are healthy.
+
+//OVERALL SUMMARY OF SECTION
 
 3.  Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?
 
