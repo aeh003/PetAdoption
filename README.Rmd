@@ -151,7 +151,7 @@ pets |>
 
 ### Research Questions:
 
-1.  What factors impact the likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood vary between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?
+1.  **What factors impact the likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood vary between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?**
 
 ```{r}
 #On average how likely is a pet to be adopted?
@@ -181,11 +181,6 @@ cor(pets$TimeInShelterDays, pets$AdoptionLikelihood)
 ```
 
 A pet is, on average, 32.8% likely to be adopted. The time in shelter's correlation to adoption likelihood is practically nonexistent. The type of pet that is most likely to be adopted is dogs around 46.4%, and the least likely pet to get adopted is rabbits around 25.4%.
-
-```{r}
-
-
-```
 
 #Does breed play a role #Note Rabbit and Birds were not considered as they each only have one Breed
 
@@ -220,6 +215,8 @@ pets |>
   ylab("Adoption Rate")
 
 ```
+
+These graph show the adoption likelihoods for different type of breeds with the PetType. Birds and Rabbits do no have graphs as each only has one breed. From the dog graph, it is clear that labradors are the most likely dog breed to be adopted with around 73% likely. The cat graph displays that Siamese are more likely to be adopted in comparison to Persian cats.
 
 ```{r}
 
@@ -266,6 +263,8 @@ pets |>
   )
 ```
 
+The top graph shows a general color breakdown by color of adoption likelihood with orange pets being the most likily and white pets being the least likely. The second graph facets by PetType showing that brown dog are the most likely to be adopted. White rabbits are seen to be decently less likely to be adopted in comparison with other PetTypes and within rabbits in general.
+
 ```{r}
 most_adopted <- pets |> 
   group_by(PetType, Breed, Color) |> 
@@ -291,11 +290,11 @@ most_adopted |>
   
 ```
 
-ADD IN A CONCLUSION BASED ON THE DATA and the graphs
+This graph displays the top 15 combinations are PetType, Breed, and Color that are most likely to be adopted. From the graph it can be extracted that the most likely pet to be adopted in the shelter is a Brown Labrador with over 80%. The least likely dog to be adopted is a white poodle.
 
-Note: the average was taken as each PetType does not have the same amount of entries. Taking the mean make the data more meaningful in a regardless of the amount of data for each type of animal.
+ADD AN OVERALL CONCLUSION TO THIS SECTION
 
-2.  What factor has the largest impact on time spent in the shelter? Is age a contributor? What breed is more likely to spend a long time in the shelter? Does health condition impact the time spent in shelter?
+2.  **What factor has the largest impact on time spent in the shelter? Is age a contributor? What breed is more likely to spend a long time in the shelter? Does health condition impact the time spent in shelter?**
 
 ```{r}
 
