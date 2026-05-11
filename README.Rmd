@@ -8,13 +8,16 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# Load libraries
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(readr)
 ```
 
 ## Introduction
 
-//NEEDS REPHRASING
-
-The goal of our project is to explore the 'Pet Adoption' dataset to better understand which pets have the best likelihood of adoption. Shelters across the world are overflowing with pets. Our aim is to find factors that impact a pet's adoption likelihood, so shelter can better represent under adopted pets. This analyze could help bring awareness to pet adoption and increase the adopts of under adopted pets.
+The goal of our project is to explore the 'Pet Adoption' dataset to better understand which pets have the best likelihood of adoption. Animal shelters across the world are overcrowded, making it important to identify what influences adoption. Our aim is to find factors that impact a pet's adoption likelihood, so shelters can better represent underadopted pets. This analyze could help bring awareness to pet adoption and increase the adoption rates for underadopted pets.
 
 To achieve our goal, we are exploring the following key questions:
 
@@ -39,7 +42,7 @@ Citation:
 Rabie El kharoua. (2024). 🐾 Predict Pet Adoption Status Dataset 🐾 [Data set]. Kaggle. <https://doi.org/10.34740/KAGGLE/DS/5242440>
 
 ```{r}
-library(readr)
+
 pets <- read_csv("pet_adoption_data.csv")
 head(pets)
 summary(pets)
@@ -52,11 +55,6 @@ dim(pets)
 To clean the dataset, we checked for missing values, duplicates, and outliers that could skew the data. We changed columns with binary '1' and '0' values to boolean values.
 
 ```{r}
-# Load libraries
-library(dplyr)
-library(ggplot2)
-library(tidyverse)
-
 # Check for missing values
 colSums(is.na(pets))
 ```
@@ -115,27 +113,9 @@ Our variable after cleaning:
 
 13. **AdoptionLikelihood:** Likelihood of the pet being adopted (0 - Unlikely, 1 - Likely).
 
-//DO SOMETHING WITH THIS!!!!
-
-Some summaries we plan to explore are the averages of numerical values between the different types of pet, and among different breeds. We also plan to investigate the data by exploring the different pet type and breeds, as well as the distribution of different color, weight, and type.
+An initial view of the number of pets in the data type and what type of animals are in the animal shelter.
 
 ```{r}
-
-#different types of pet 
-unique(pets$PetType)
-
-pets |> 
-  filter(PetType == "Dog") |> 
-  distinct(Breed) 
-pets |> 
-  filter(PetType == "Cat") |> 
-  distinct(Breed)
-pets |> 
-  filter(PetType == "Bird") |> 
-  distinct(Breed)
-pets |> 
-  filter(PetType == "Rabbit") |> 
-  distinct(Breed)
 
 pets |>
   ggplot(aes(x = PetType, fill = PetType)) +
@@ -143,8 +123,16 @@ pets |>
   ggtitle("Number of Pets by Pet Type") +
   xlab("Pet Type") 
 
+pets |>
+  ggplot(aes(x = Breed, fill = Breed)) +
+  geom_bar() +
+  ggtitle("Number of Pets by Pet Type") +
+  xlab("Breeds") +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 
 ```
+
+These graphs show the pet type and breed distribution in the dataset. The most common breeds in the datasets are parakeet and rabbit. The pet type that is most common at the shelter is dogs followed closest by cats.
 
 ### Research Questions:
 
@@ -155,7 +143,7 @@ pets |>
 mean(pets$AdoptionLikelihood)
 
 
-#The time in shleter is not related to the likelihood of adoption
+#is shelter time correlated to adoptionLikelihood?
 cor(pets$TimeInShelterDays, pets$AdoptionLikelihood)
 
 #which pet type is most likely to be adopted?
@@ -177,7 +165,7 @@ cor(pets$TimeInShelterDays, pets$AdoptionLikelihood)
   ylab("Pet Type")
 ```
 
-A pet is, on average, 32.8% likely to be adopted. The time in shelter's correlation to adoption likelihood is practically nonexistent. The type of pet that is most likely to be adopted is dogs around 46.4%, and the least likely pet to get adopted is rabbits around 25.4%.
+A pet is on average, 32.8% likely to be adopted. The time in the shelter's correlation to adoption likelihood is practically nonexistent with a value of 0.009. The type of pet most likely to be adopted is dogs, at 46.4%, and the least likely pet to be adopted is rabbits, at 25.4%.
 
 ```{r}
 pets |> 
@@ -209,7 +197,7 @@ pets |>
 
 ```
 
-These graph show the adoption likelihoods for different type of breeds with the PetType. Birds and Rabbits do no have graphs as each only has one breed. From the dog graph, it is clear that Labradors are the most likely dog breed to be adopted with around 73% likely. The cat graph displays that Siamese are more likely to be adopted in comparison to Persian cats.
+These graphs show the adoption likelihoods for different types of breeds by pet type. Birds and rabbits do not have graphs, as each only have one breed. From the dog graph, it is clear that Labradors are the most likely dog breed to be adopted with around 73% likely. The cat graph displays that Siamese are more likely to be adopted in comparison to Persian cats. These graphs show that Persian cats and Golden Retrievers could use more marketing to help increase their adoption numbers.
 
 ```{r}
 
@@ -256,7 +244,7 @@ pets |>
   )
 ```
 
-The top graph shows a general color breakdown by color of adoption likelihood with orange pets being the most likily and white pets being the least likely. The second graph facets by PetType showing that brown dog are the most likely to be adopted. White rabbits are seen to be decently less likely to be adopted in comparison with other PetType and within rabbits in general.
+The top graph shows a general color breakdown by adoption likelihood with orange pets being the most likely and white pets being the least likely. The second graph facets by pet type, showing that brown dogs are the most likely to be adopted. White rabbits are less likely to be adopted than other pets and, within rabbits, less likely than other colors. These findings suggest the white rabbit should be shown first to potential owners in hopes are increased odds of adoption.
 
 ```{r}
 most_adopted <- pets |> 
@@ -283,14 +271,11 @@ most_adopted |>
   
 ```
 
-This graph displays the top 15 combinations are PetType, Breed, and Color that are most likely to be adopted. From the graph it can be extracted that the most likely pet to be adopted in the shelter is a Brown Labrador with over 80%. The least likely dog to be adopted is a white poodle.
-
-ADD AN OVERALL CONCLUSION TO THIS SECTION
+This graph displays the top 15 combinations of pet type, breed, and color that are most likely to be adopted. From the graph, it can be extracted that the most likely pet to be adopted in the shelter is a Brown Labrador with over 80%. The least likely dog to be adopted is a white poodle.
 
 2.  **What factor has the largest impact on time spent in the shelter? Is age a contributor? What breed is more likely to spend a long time in the shelter? Does health condition impact the time spent in shelter?**
 
 ```{r}
-
 pets |> 
   ggplot(aes(x = TimeInShelterDays))  +
   geom_histogram(binwidth = 6, fill = rgb(196, 146, 177, maxColorValue = 255)) + 
@@ -299,7 +284,7 @@ pets |>
 
 ```
 
-//TODO
+This graph displays how many pets stay for a certain number of days. The graph looks bimodal, with peaks around 15-25 days and 60-65 days. The large drops indicate that adoption has increased.
 
 ```{r}
 pets |> 
@@ -310,7 +295,7 @@ pets |>
   ylab("Number of Pets")  
 ```
 
-//TODO
+This graph shows the number of days a pet has stayed faceted by pet type.
 
 ```{r}
 pets |> 
@@ -327,7 +312,7 @@ pets |>
   ylab("Mean") 
 ```
 
-The graph shows the average time a pet type spend in the shelter. Rabbits have the longest average stay time, but all the animals spend around the same amount on average in the shelter (within 10 days).
+The graph shows the average time a pet type spends in the shelter. Rabbits have the longest average stay time, but all the animals spend about the same amount on average in the shelter (within 10 days).
 
 ```{r}
 pets |> 
@@ -345,10 +330,10 @@ pets |>
   theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust = 1))
 ```
 
-The graph was created to see if there is a certain breed that has abnormally long stays. The graph shows that all of the breeds are within 10 days of average shelter time. This means that not one type of breed is particular, not adopted quickly.
+The graph was created to see if there is a certain breed that has abnormally long stays. The graph shows that all of the breeds are within 10 days of average shelter time. This means that not one type of breed is particularly, not adopted quickly.
 
 ```{r}
-#making a facet
+
 cor(pets$AgeMonths, pets$TimeInShelterDays, use = "complete.obs")
 cor(pets$WeightKg, pets$TimeInShelterDays, use = "complete.obs")
 cor(pets$AdoptionFee, pets$TimeInShelterDays, use = "complete.obs")
@@ -364,6 +349,8 @@ pets |>
   ylab("Time in Shelter (days)")
 
 ```
+
+This graph shows that the age of an animal has little to no relevance to the amount of time said animal stays in the shelter. The regression lines show decently horizontal lines for all the pet types. The pet type with the largest correlation is dogs, with a slightly positive slope.
 
 ```{r}
 
@@ -381,13 +368,10 @@ pets |>
 
 ```
 
-This graph displays that younger pets (under 2) tend to spend less time in the shelter. This makes sense since my pet owner likes to adopt puppies and kittens. This graph was created to see if old pets are more likely to spend longer time in the shelter. The data does support that assumption, but not significantly as adult pets have a similar median.
+This graph displays that younger pets (under 2) tend to spend less time in the shelter. This graph was created to see whether older pets are more likely to spend a longer time in the shelter. The data does support that assumption, but not significantly, as adult pets have a similar median.
 
 ```{r}
-#long stay calculate top 10% of the the total time shelter
-
-
-
+#long stay calculate top 10% of the total time shelter
 pets2 <- pets |> 
   mutate(LongStay = TimeInShelterDays >= quantile(TimeInShelterDays, 0.9, na.rm = TRUE))
 
@@ -405,7 +389,6 @@ LongStayBreed <- pets2 |>
 LongStayBreed
 
 
-#mess with the prettiness of the graph
 LongStayBreed |> 
   filter(n >=30) |> 
   arrange(desc(longStayRate)) |> 
@@ -417,7 +400,7 @@ LongStayBreed |>
   ggtitle("Long Stay Rate and Breed")
 ```
 
-Long Stays are the top 10 quantile of time in the shelter. //TODO
+Long Stays are the top 10% of time spent in the shelter. The graph shows that Labradors are the breed with the most Long Stay residents with around 15% of long stay pets are Labrador. The least likely to have a long stay is Poodles.
 
 ```{r}
 
@@ -430,13 +413,13 @@ pets |>
     avgDays = mean(TimeInShelterDays),
     medianDays = median(TimeInShelterDays)
   ) 
-  
-
 
 pets |> 
-  ggplot(aes(x = HealthCondition, y = TimeInShelterDays, fill = HealthCondition)) +
+  ggplot(aes(x = factor(HealthCondition), y = TimeInShelterDays, fill = factor(HealthCondition)))+
   geom_boxplot() + 
-  xlab("Health Condition")
+  xlab("Health Condition") + 
+  labs(fill = "Health Condition") + 
+  ggtitle("Time In Shelter and Health Condition")
 
 
 ```
@@ -447,20 +430,19 @@ The ranges on the boxplots and the medians are relative the same thus there is n
 
 #add titles and colors 
 pets |> 
-  ggplot(aes(x = HealthCondition, y = TimeInShelterDays, fill = HealthCondition)) +
+  ggplot(aes(x = factor(HealthCondition), y = TimeInShelterDays, fill = factor(HealthCondition))) +
   geom_boxplot() +
   coord_flip()+
   facet_wrap(~PetType)  +
   xlab("Health Condition") + 
-  ggtitle("Time In Shelter and Health Condition")
+  ggtitle("Time In Shelter and Health Condition") + 
+  labs(fill = "Health Condition")
 
 ```
 
-The graph shows that having a health condition does not durasticly impact the amount of time animal spend in the shelter regardless of the type of pet. Although the cats and dogs are slightly more likely to spend less time in the shelter if they are healthy.
+The graph shows that having a health condition does not drastically impact the amount of time animal spend in the shelter regardless of the type of pet. Although the cats and dogs are slightly more likely to spend less time in the shelter if they are healthy.
 
-//OVERALL SUMMARY OF SECTION
-
-3.  Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?
+3.  **Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?**
 
 ```{r}
 
@@ -531,7 +513,7 @@ pets |>
   ylab("Adoption Fee ($)")
 ```
 
-4.  Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?
+4.  **Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?**
 
 ```{r}
 # Which type of pets are most likely to be healthy (HealthCondition = FALSE)?
@@ -608,4 +590,22 @@ pets |>
   theme(legend.position = "none")
 ```
 
-To investigate these questions, we plan on looking at boxplots, histograms and scatter plots and perform linear regressions to identify trends and correlations within the data.
+## Conclusion
+
+After analyzing and cleaning the dataset, the results suggest that a pet's health condition is the most important factor that shelters can influence to improve adoption rates.
+
+-   Health and Pet Type are The Biggest Drivers of Adoption
+
+    -   The data show that pet type and health status are the most critical factors in adoption. Dogs and animals with no health conditions are more likely to find a home. 
+
+-   Time in Shelter is Unpredictable
+
+    -    Variables like a pet's age, adoption fee, and medical condition show little to no correlation with how many days they spend in the shelter.
+
+-   Adoption Fees are Static
+
+    -    Fees are not adjusted based on a pet's size, vaccination status, or medical needs, and the cost does not positively or negatively influence a pet's chance of being adopted.
+
+-   Predicting Adoption Requires More
+
+    -   Since there are few strong trends, a pet’s likelihood of being adopted is likely based on complex combinations of variables. For an accurate prediction, we would need advanced machine learning models.
