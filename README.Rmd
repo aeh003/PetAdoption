@@ -132,7 +132,7 @@ pets |>
 
 These graphs show the pet type and breed distribution in the dataset. The most common breeds in the datasets are parakeet and rabbit. The pet type that is most common at the shelter is dogs followed closest by cats.
 
-### Research Questions:
+### Research Questions
 
 1.  **What factors impact the likelihood of adoption? Does a longer time in shelter decrease the likelihood of adoption? What type of animal is most likely to get adopted? How does the likelihood vary between breed for the same pet type? Is there a certain pet color that is more likely to be adopted?**
 
@@ -402,7 +402,7 @@ Long Stays are the top 10% of time spent in the shelter. The graph shows that La
 
 ```{r}
 
-#Does having a healthCondition impact shelter time?
+#Does having a health condition impact shelter time?
 
 pets |> 
   group_by(HealthCondition) |> 
@@ -422,7 +422,7 @@ pets |>
 
 ```
 
-The ranges on the boxplots and the medians are relative the same thus there is no significant impact of health condition on the amount of shelter days.
+The ranges on the boxplots and the medians are relatively the same, thus there is no significant impact of health condition on the amount of shelter days.
 
 ```{r}
 
@@ -438,7 +438,7 @@ pets |>
 
 ```
 
-The graph shows that having a health condition does not drastically impact the amount of time animal spend in the shelter regardless of the type of pet. Although the cats and dogs are slightly more likely to spend less time in the shelter if they are healthy.
+The graph shows that having a health condition does not drastically impact the amount of time animals spend in the shelter, regardless of the type of pet. Although the cats and dogs are slightly more likely to spend less time in the shelter if they are healthy.
 
 3.  **Is there a breed that has a higher adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?**
 
@@ -463,7 +463,7 @@ pets |>
   ylab("Median Adoption Fee ($)")
 ```
 
-This graph shows that adoption fee changes slightly by breed, with all of the median adoption fees on a \$200-\$300 dollar range. Parakeet is on the top of the graph demonstrating that it has the highest median adoption fee (~\$275) and rabbit is at the bottom with the lowest median adoption fee (~\$225). 
+This graph shows that adoption fee changes slightly by breed, with all of the median adoption fees in a \$200-\$300 dollar range. Parakeet is at the top of the graph, with the highest median adoption fee (~\$275), and rabbit is at the bottom, with the lowest median adoption fee (~\$225). 
 
 ```{r}
 # Does the adoption fee have any correlation to the size of the pet?
@@ -478,7 +478,7 @@ pets |>
   ylab("Adoption Fee ($)")
 ```
 
-The scatterplots and the correlation coefficient show that there appears to be a negligible relationship between weight and fee across all pet types, as the data is very well distributed. At most, the trendline for the Dog category has a slight negative slope, showing that heavier dogs might have slightly lower adoption fees, but this is a weak correlation.This suggests that the physical size of the pet does not play a significant role in how shelters price their adoptions.
+The scatterplots and the correlation coefficient show that there appears to be a negligible relationship between weight and fee across all pet types, as the data is very well distributed. At most, the trendline for the Dog category has a slight negative slope, showing that heavier dogs might have slightly lower adoption fees, but this is a weak correlation. This suggests that the physical size of the pet does not play a significant role in how shelters price their adoptions.
 
 ```{r}
 # Do pets with higher adoption fees have better health conditions/are vaccinated?
@@ -498,7 +498,7 @@ pets |>
   ylab("Adoption Fee ($)")
 ```
 
-The boxplots comparing health status and vaccination status against adoption fees reveal that pets who are healthy and vaccinated generally show similar adoption fees compared to those with medical conditions or missing vaccinations. This indicates that the shelter does not charge a premium to offset the costs of medical care and vaccinations prior to adoption. At most, the median adoption fee for vaccinated pets is slightly higher than non-vaccinated ones, but the difference is not significant.
+The boxplots comparing health status and vaccination status against adoption fees reveal that pets who are healthy and vaccinated generally show similar adoption fees compared to those with medical conditions or missing vaccinations. This indicates that the shelter does not charge a premium to offset the costs of medical care and vaccinations prior to adoption. At most, the median adoption fee for vaccinated pets is slightly higher than that for non-vaccinated ones, but the difference is not significant.
 
 ```{r}
 # Does the color of the pet impact the adoption fee?
@@ -513,7 +513,7 @@ pets |>
   theme(legend.position = "none")
 ```
 
-This visualization explores whether color influence pricing. By ordering the boxplots by median fee, we can see that Brown pets tend to have the highest median adoption fees, while White pets are priced lower. However, because the boxes overlap significantly, it implies that while there may be some median differences (from ~\$225 for White pets to ~\$260 for Brown ones), color does not seem to be a strict determining factor in the overall adoption fee.
+This visualization explores whether color influences pricing. By ordering the boxplots by median fee, we can see that Brown pets tend to have the highest median adoption fees, while White pets are priced lower. However, because the boxes overlap significantly, it implies that while there may be some median differences (from ~\$225 for White pets to ~\$260 for Brown ones), color does not seem to be a strict determining factor in the overall adoption fee.
 
 ```{r}
 # Does adoption fee impact the likelihood of adoption?
@@ -526,9 +526,9 @@ pets |>
   ylab("Adoption Fee ($)")
 ```
 
-By comparing the distribution of adoption fees between pets that were likely to be adopted versus those that were not, the boxplot shows that pets that are liklely to be adopted (TRUE) sits at a nearly identical median fee compared to the not likely group (FALSE). This suggests that higher adoption fees do not significantly hinder the likelihood of a pet finding a home in this dataset. It is important to notice, however, that the boxplot for likely adopted pets is slightly shorter, indicating a smaller interquartile range compared to the not likely group. This could suggest that pets priced within a specific range are more consistently adopted, whereas pets with adoption fees that are unusually high or unusually low experience more variance and may face a harder time finding a home.
+By comparing the distribution of adoption fees between pets that were likely to be adopted versus those that were not, the boxplot shows that pets that are likely to be adopted (TRUE) sit at a nearly identical median fee compared to the not likely group (FALSE). This suggests that higher adoption fees do not significantly hinder the likelihood of a pet finding a home in this dataset. It is important to notice, however, that the boxplot for likely adopted pets is slightly shorter, indicating a smaller interquartile range compared to the not likely group. This could suggest that pets priced within a specific range are more consistently adopted, whereas pets with adoption fees that are unusually high or unusually low experience more variance and may face a harder time finding a home.
 
-4.  **Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?**
+4.  **Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical conditions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?**
 
 ```{r}
 # Which type of pets are most likely to be healthy (HealthCondition = FALSE)?
@@ -546,7 +546,7 @@ pets |>
   ylab("Proportion Healthy")
 ```
 
-The bar chart highlights the baseline health status across different types of animals upon intake. Birds represent the highest proportion of healthy individuals, at above 80% while Cats show the lowest health rate just below 80%. Overall, pets across all types have a high percentage of healthy animals at around 80%.
+The bar chart highlights the baseline health status across different types of animals upon intake. Birds represent the highest proportion of healthy individuals, at above 80%, while Cats show the lowest health rate, just below 80%. Overall, pets across all types have a high percentage of healthy animals at around 80%.
 
 ```{r}
 # How does that connect to the time spent in the shelter?
@@ -650,4 +650,4 @@ Based on our analysis, we have drawn the following key conclusions:
 
     -   Because there are few strong, isolated trends regarding shelter time and adoption fees, a pet’s ultimate likelihood of being adopted is likely based on complex, intersecting combinations of variables. To accurately predict adoption outcomes, future studies would benefit from advanced multivariate analysis and machine learning models.
 
-Ultimately, while the data shows that certain traits give pets an inherent advantage, strategic marketing and prioritizing medical care are the best tools a shelter has to help under-represented pets find their forever homes.
+Ultimately, while the data shows that certain traits give pets an inherent advantage, strategic marketing and prioritizing medical care are the best tools a shelter has to help underrepresented pets find their forever homes.
