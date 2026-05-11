@@ -271,7 +271,7 @@ The most common breeds in the datasets are parakeet and rabbit. The pet
 type that is most common at the shelter is dogs followed closest by
 cats.
 
-### Research Questions:
+### Research Questions
 
 1.  **What factors impact the likelihood of adoption? Does a longer time
     in shelter decrease the likelihood of adoption? What type of animal
@@ -689,7 +689,7 @@ around 15% of long stay pets are Labrador. The least likely to have a
 long stay is Poodles.
 
 ``` r
-#Does having a healthCondition impact shelter time?
+#Does having a health condition impact shelter time?
 
 pets |> 
   group_by(HealthCondition) |> 
@@ -717,7 +717,7 @@ pets |>
 
 ![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
-The ranges on the boxplots and the medians are relative the same thus
+The ranges on the boxplots and the medians are relatively the same, thus
 there is no significant impact of health condition on the amount of
 shelter days.
 
@@ -736,8 +736,8 @@ pets |>
 ![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 The graph shows that having a health condition does not drastically
-impact the amount of time animal spend in the shelter regardless of the
-type of pet. Although the cats and dogs are slightly more likely to
+impact the amount of time animals spend in the shelter, regardless of
+the type of pet. Although the cats and dogs are slightly more likely to
 spend less time in the shelter if they are healthy.
 
 3.  **Is there a breed that has a higher adoption fee? Does the adoption
@@ -769,10 +769,10 @@ pets |>
 ![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 This graph shows that adoption fee changes slightly by breed, with all
-of the median adoption fees on a \$200-\$300 dollar range. Parakeet is
-on the top of the graph demonstrating that it has the highest median
-adoption fee (~\$275) and rabbit is at the bottom with the lowest median
-adoption fee (~\$225).
+of the median adoption fees in a \$200-\$300 dollar range. Parakeet is
+at the top of the graph, with the highest median adoption fee (~\$275),
+and rabbit is at the bottom, with the lowest median adoption fee
+(~\$225).
 
 ``` r
 # Does the adoption fee have any correlation to the size of the pet?
@@ -800,9 +800,9 @@ The scatterplots and the correlation coefficient show that there appears
 to be a negligible relationship between weight and fee across all pet
 types, as the data is very well distributed. At most, the trendline for
 the Dog category has a slight negative slope, showing that heavier dogs
-might have slightly lower adoption fees, but this is a weak
-correlation.This suggests that the physical size of the pet does not
-play a significant role in how shelters price their adoptions.
+might have slightly lower adoption fees, but this is a weak correlation.
+This suggests that the physical size of the pet does not play a
+significant role in how shelters price their adoptions.
 
 ``` r
 # Do pets with higher adoption fees have better health conditions/are vaccinated?
@@ -834,8 +834,8 @@ show similar adoption fees compared to those with medical conditions or
 missing vaccinations. This indicates that the shelter does not charge a
 premium to offset the costs of medical care and vaccinations prior to
 adoption. At most, the median adoption fee for vaccinated pets is
-slightly higher than non-vaccinated ones, but the difference is not
-significant.
+slightly higher than that for non-vaccinated ones, but the difference is
+not significant.
 
 ``` r
 # Does the color of the pet impact the adoption fee?
@@ -852,13 +852,13 @@ pets |>
 
 ![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
-This visualization explores whether color influence pricing. By ordering
-the boxplots by median fee, we can see that Brown pets tend to have the
-highest median adoption fees, while White pets are priced lower.
-However, because the boxes overlap significantly, it implies that while
-there may be some median differences (from ~\$225 for White pets to
-~\$260 for Brown ones), color does not seem to be a strict determining
-factor in the overall adoption fee.
+This visualization explores whether color influences pricing. By
+ordering the boxplots by median fee, we can see that Brown pets tend to
+have the highest median adoption fees, while White pets are priced
+lower. However, because the boxes overlap significantly, it implies that
+while there may be some median differences (from ~\$225 for White pets
+to ~\$260 for Brown ones), color does not seem to be a strict
+determining factor in the overall adoption fee.
 
 ``` r
 # Does adoption fee impact the likelihood of adoption?
@@ -875,7 +875,7 @@ pets |>
 
 By comparing the distribution of adoption fees between pets that were
 likely to be adopted versus those that were not, the boxplot shows that
-pets that are liklely to be adopted (TRUE) sits at a nearly identical
+pets that are likely to be adopted (TRUE) sit at a nearly identical
 median fee compared to the not likely group (FALSE). This suggests that
 higher adoption fees do not significantly hinder the likelihood of a pet
 finding a home in this dataset. It is important to notice, however, that
@@ -888,7 +888,7 @@ finding a home.
 
 4.  **Which type of pets are most likely to be healthy (HealthCondition
     = 1), and how does that connect to the time spent in the shelter?
-    Are medical consitions more common among older animals across all
+    Are medical conditions more common among older animals across all
     pet types? Are certain breeds more likely to have a medical
     condition?**
 
@@ -912,9 +912,9 @@ pets |>
 
 The bar chart highlights the baseline health status across different
 types of animals upon intake. Birds represent the highest proportion of
-healthy individuals, at above 80% while Cats show the lowest health rate
-just below 80%. Overall, pets across all types have a high percentage of
-healthy animals at around 80%.
+healthy individuals, at above 80%, while Cats show the lowest health
+rate, just below 80%. Overall, pets across all types have a high
+percentage of healthy animals at around 80%.
 
 ``` r
 # How does that connect to the time spent in the shelter?
@@ -1084,5 +1084,5 @@ Based on our analysis, we have drawn the following key conclusions:
 
 Ultimately, while the data shows that certain traits give pets an
 inherent advantage, strategic marketing and prioritizing medical care
-are the best tools a shelter has to help under-represented pets find
+are the best tools a shelter has to help underrepresented pets find
 their forever homes.
