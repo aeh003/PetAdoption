@@ -29,25 +29,23 @@ To achieve our goal, we are exploring the following key questions:
 
 -   How does a pet's health condition relate to other factors in pet adoption?
 
-We hope these findings will help us to conclude how shelters can best help pets to b e adopted.
+We hope these findings will help us to conclude how shelters can best help pets to be adopted.
 
 ### Data Description
 
 We are using a kaggle dataset created by Rabie El kharoua in 2024. This dataset provides a comprehensive look into various factors that can influence the likelihood of a pet being adopted from a shelter, covering various characteristics and attributes.
 
-Pet Adoption Link: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset>
+Pet Adoption Dataset Link: <https://www.kaggle.com/datasets/rabieelkharoua/predict-pet-adoption-status-dataset>
 
 Citation:
 
 Rabie El kharoua. (2024). 🐾 Predict Pet Adoption Status Dataset 🐾 [Data set]. Kaggle. <https://doi.org/10.34740/KAGGLE/DS/5242440>
 
 ```{r}
-
 pets <- read_csv("pet_adoption_data.csv")
 head(pets)
 summary(pets)
 dim(pets)
-
 ```
 
 ## Cleaning
@@ -85,7 +83,7 @@ summary(pets)
 dim(pets)
 ```
 
-Our variable after cleaning:
+Our variables after cleaning are:
 
 1.  **PetID:** Unique identifier for each pet.
 
@@ -113,7 +111,7 @@ Our variable after cleaning:
 
 13. **AdoptionLikelihood:** Likelihood of the pet being adopted (0 - Unlikely, 1 - Likely).
 
-An initial view of the number of pets in the data type and what type of animals are in the animal shelter.
+An initial view of the number of pets in the data type and what type of animals are in the animal shelter and the general distribution.
 
 ```{r}
 
@@ -442,12 +440,11 @@ pets |>
 
 The graph shows that having a health condition does not drastically impact the amount of time animal spend in the shelter regardless of the type of pet. Although the cats and dogs are slightly more likely to spend less time in the shelter if they are healthy.
 
-3.  **Is there a breed that has a larger adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?**
+3.  **Is there a breed that has a higher adoption fee? Does the adoption fee have any correlation to the size of the pet? Do pets with higher adoption fees have better health conditions/are vaccinated? Does the color of the pet impact the adoption fee?**
 
 ```{r}
-
-# Is there a breed that has a larger adoption fee?
-# Using median fee to avoid skewness from outliers
+# Is there a breed that has a higher adoption fee?
+  # Using median fee to avoid skewness from outliers
 pets |> 
   group_by(Breed, PetType) |>
   summarise(
@@ -464,7 +461,11 @@ pets |>
   ggtitle("Median Adoption Fee by Breed") +
   xlab("Breed (Pet Type)") +
   ylab("Median Adoption Fee ($)")
+```
 
+This graph shows that adoption fee changes slightly by breed, with all of the median adoption fees on a \$200-\$300 dollar range. Parakeet is on the top of the graph demonstrating that it has the highest median adoption fee (~\$275) and rabbit is at the bottom with the lowest median adoption fee (~\$225). 
+
+```{r}
 # Does the adoption fee have any correlation to the size of the pet?
 cor(pets$WeightKg, pets$AdoptionFee, use = "complete.obs")
 pets |> 
@@ -475,7 +476,11 @@ pets |>
   ggtitle("Adoption Fee vs. Pet Weight by Pet Type") +
   xlab("Weight (Kg)") +
   ylab("Adoption Fee ($)")
+```
 
+The scatterplots and the correlation coefficient show that there appears to be a negligible relationship between weight and fee across all pet types, as the data is very well distributed. At most, the trendline for the Dog category has a slight negative slope, showing that heavier dogs might have slightly lower adoption fees, but this is a weak correlation.This suggests that the physical size of the pet does not play a significant role in how shelters price their adoptions.
+
+```{r}
 # Do pets with higher adoption fees have better health conditions/are vaccinated?
 pets |> 
   ggplot(aes(x = HealthCondition, y = AdoptionFee, fill = HealthCondition)) +
@@ -491,7 +496,11 @@ pets |>
   ggtitle("Adoption Fee by Vaccination Status") +
   xlab("Vaccinated") +
   ylab("Adoption Fee ($)")
+```
 
+The boxplots comparing health status and vaccination status against adoption fees reveal that pets who are healthy and vaccinated generally show similar adoption fees compared to those with medical conditions or missing vaccinations. This indicates that the shelter does not charge a premium to offset the costs of medical care and vaccinations prior to adoption. At most, the median adoption fee for vaccinated pets is slightly higher than non-vaccinated ones, but the difference is not significant.
+
+```{r}
 # Does the color of the pet impact the adoption fee?
 pets |> 
   ggplot(aes(x = reorder(Color, AdoptionFee, FUN = median), y = AdoptionFee, fill = Color)) +
@@ -502,7 +511,11 @@ pets |>
   xlab("Color") +
   ylab("Adoption Fee ($)") +
   theme(legend.position = "none")
+```
 
+This visualization explores whether color influence pricing. By ordering the boxplots by median fee, we can see that Brown pets tend to have the highest median adoption fees, while White pets are priced lower. However, because the boxes overlap significantly, it implies that while there may be some median differences (from ~\$225 for White pets to ~\$260 for Brown ones), color does not seem to be a strict determining factor in the overall adoption fee.
+
+```{r}
 # Does adoption fee impact the likelihood of adoption?
 pets |> 
   ggplot(aes(x = AdoptionLikelihood, y = AdoptionFee, fill = AdoptionLikelihood)) +
@@ -512,6 +525,8 @@ pets |>
   xlab("Adoption Likelihood") +
   ylab("Adoption Fee ($)")
 ```
+
+By comparing the distribution of adoption fees between pets that were likely to be adopted versus those that were not, the boxplot shows that pets that are liklely to be adopted (TRUE) sits at a nearly identical median fee compared to the not likely group (FALSE). This suggests that higher adoption fees do not significantly hinder the likelihood of a pet finding a home in this dataset. It is important to notice, however, that the boxplot for likely adopted pets is slightly shorter, indicating a smaller interquartile range compared to the not likely group. This could suggest that pets priced within a specific range are more consistently adopted, whereas pets with adoption fees that are unusually high or unusually low experience more variance and may face a harder time finding a home.
 
 4.  **Which type of pets are most likely to be healthy (HealthCondition = 1), and how does that connect to the time spent in the shelter? Are medical consitions more common among older animals across all pet types? Are certain breeds more likely to have a medical condition?**
 
@@ -529,7 +544,11 @@ pets |>
   ggtitle("Proportion of Healthy Pets by Pet Type") +
   xlab("Pet Type") +
   ylab("Proportion Healthy")
+```
 
+The bar chart highlights the baseline health status across different types of animals upon intake. Birds represent the highest proportion of healthy individuals, at above 80% while Cats show the lowest health rate just below 80%. Overall, pets across all types have a high percentage of healthy animals at around 80%.
+
+```{r}
 # How does that connect to the time spent in the shelter?
 pets |> 
   ggplot(aes(x = HealthCondition, y = TimeInShelterDays, fill = HealthCondition)) +
@@ -539,7 +558,11 @@ pets |>
   ggtitle("Time in Shelter by Medical Condition and Pet Type") +
   xlab("Medical Condition") +
   ylab("Time in Shelter (Days)")
+```
 
+Faceted by pet type, the boxplots investigate whether having a medical condition prolongs a pet's stay in the shelter. Across most categories, pets with medical conditions (TRUE) show a similar median number of days spent in the shelter compared to healthy pets (FALSE). At most, Cats and Dogs with medical conditions have slightly lower median number of days spent in the shelter, which seems to be counterintuitive but could also indicate that they might pass away before getting adopted. Overall, it can be seen that underlying health issues have little impact on how quickly a pet is adopted.
+
+```{r}
 # Are medical conditions more common among older animals across all pet types?
 pets |> 
   mutate(AgeGroups = if_else(AgeMonths < 24, "Young (<2 years)", 
@@ -556,7 +579,12 @@ pets |>
   ggtitle("Rate of Medical Conditions by Age Group and Pet Type") +
   xlab("Age Group") +
   ylab("Proportion with Medical Condition")
+```
 
+The dodged bar chart tracks the prevalence of medical conditions as animals age, revealing that age-related health trends vary by pet type. For cats, there is a clear upward trajectory, with the proportion of medical conditions increasing with age and spiking notably in the "Old (>7 years)" category. Conversely, dogs exhibit a downward trend, presenting with fewer medical conditions in the older age groups. Birds follow a distinct "U-shaped" pattern, indicating higher rates of medical issues in both the youngest and oldest groups, but a lower rate during their adult years. Meanwhile, the rate for rabbits remains relatively stable across all age brackets. This demonstrates that while age is an important factor in shelter health, its specific impact is highly dependent on the species of the animal.
+
+
+```{r}
 # Are certain breeds more likely to have a medical condition?
 pets |> 
   group_by(Breed, PetType) |>
@@ -573,7 +601,11 @@ pets |>
   ggtitle("Proportion of Pets with Medical Conditions by Breed") +
   xlab("Breed (Pet Type)") +
   ylab("Proportion with Medical Condition")
+```
 
+The horizontal bar chart ranks specific breeds based on their likelihood of presenting with a medical condition. At the top of the chart, the Poodle shows the highest proportion of health issues. This could point to genetic predispositions within that specific breed, or it may reflect the typical background and prior care quality of these animals before they were surrendered to the shelter. At the bottom of the char, Labradors have the lowest proportion of health issue, which again could point to genetic factors.
+
+```{r}
 # Does health condition impact the likelihood of adoption?
 pets |> 
   group_by(HealthCondition) |> 
@@ -590,22 +622,32 @@ pets |>
   theme(legend.position = "none")
 ```
 
+This final bar chart directly addresses whether a medical condition could deter potential adopters. By comparing the overall adoption rates, we can see that pets without a medical condition (FALSE) have an adoption rate close to 40%, while pets with medical conditions (TRUE) have a rate close to 10%. This demonstrates that health status is a significant barrier when it comes to finding a forever home for these animals.
+
 ## Conclusion
 
-After analyzing and cleaning the dataset, the results suggest that a pet's health condition is the most important factor that shelters can influence to improve adoption rates.
+Through our exploration of the Pet Adoption dataset, we aimed to identify the primary factors that influence a pet's likelihood of adoption and their length of stay in a shelter. After cleaning and analyzing the data, we found that while some variables have a clear impact, the overall adoption process is highly nuanced.
+
+Based on our analysis, we have drawn the following key conclusions:
 
 -   Health and Pet Type are The Biggest Drivers of Adoption
 
-    -   The data show that pet type and health status are the most critical factors in adoption. Dogs and animals with no health conditions are more likely to find a home. 
+    -   The data strongly indicates that a pet's species and health conditions are the most critical determining factors for adoption. Dogs (particularly Labradors) and pets with no underlying medical conditions have the highest probability of finding a home. Medical conditions act as a significant barrier to adoption, dropping the likelihood from near 40% to roughly 10%.
 
 -   Time in Shelter is Unpredictable
 
-    -    Variables like a pet's age, adoption fee, and medical condition show little to no correlation with how many days they spend in the shelter.
-
+    -    Traditional metrics do not tightly correlate with a pet's length of stay. Variables such as a pet's age, adoption fee, and even medical condition show little to no linear relationship with how many days they spend in the shelter.
+    
 -   Adoption Fees are Static
 
-    -    Fees are not adjusted based on a pet's size, vaccination status, or medical needs, and the cost does not positively or negatively influence a pet's chance of being adopted.
+    -    Shelters in this dataset do not appear to dynamically adjust pricing based on a pet's size, vaccination status, or medical needs. Furthermore, the cost of adoption does not significantly deter or encourage potential adopters, indicating that pricing is not a primary hurdle for families looking to adopt.
+    
+-   Actionable Advice for Shelters
 
--   Predicting Adoption Requires More
+    -    Because health status is the most significant barrier to adoption, shelters should prioritize veterinary resources to treat medical conditions prior to listing pets for adoption. Additionally, since breed and color influence adoption rates, shelters should focus their marketing and social media efforts on highlighting specific under-adopted groups.
 
-    -   Since there are few strong trends, a pet’s likelihood of being adopted is likely based on complex combinations of variables. For an accurate prediction, we would need advanced machine learning models.
+-   Future Analysis Requires Complex Modeling
+
+    -   Because there are few strong, isolated trends regarding shelter time and adoption fees, a pet’s ultimate likelihood of being adopted is likely based on complex, intersecting combinations of variables. To accurately predict adoption outcomes, future studies would benefit from advanced multivariate analysis and machine learning models.
+
+Ultimately, while the data shows that certain traits give pets an inherent advantage, strategic marketing and prioritizing medical care are the best tools a shelter has to help under-represented pets find their forever homes.
